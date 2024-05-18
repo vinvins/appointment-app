@@ -31,7 +31,7 @@
         </tr>
     </thead>
     <tbody>
-<tr style="border: 1px solid" *ngFor="let appointment of allAppointments">
+<tr style="border: 1px solid" *ngFor="let appointment of allAppointments; index as i">
 <td style="border: 1px solid">
     {{appointment.Id}}
 </td>
@@ -42,7 +42,7 @@
     {{appointment.AppointmentDate | date : "dd/MM/yyyy"}}
 </td>
 <td>
-    <button type="button" (click)="deleteAppointment(appointment.Id,appointment.Title)">Delete</button>
+    <button type="button" (click)="deleteAppointment(i)">Delete</button>
 </td>
 </tr>
     </tbody>    

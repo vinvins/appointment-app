@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Appointment } from '../models/appointment';
+import { OnInit
+
+ } from '@angular/core';
 import { empty } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 
@@ -8,7 +11,8 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './new-appointment.component.html',
   styleUrls: ['./new-appointment.component.css']
 })
-export class NewAppointmentComponent {
+export class NewAppointmentComponent implements OnInit {
+
 message :string="My Message value here";
 allAppointments :Appointment[]=[];
 
@@ -17,6 +21,11 @@ allAppointments :Appointment[]=[];
   Id: Date.now(),
 Title: "",
 AppointmentDate: new Date()
+}
+
+ngOnInit(): void {
+  let savedAppointments =localStorage.getItem("myAppointments");
+this.allAppointments= savedAppointments? JSON.parse(savedAppointments) :[];
 }
 
 saveAppointment(){
@@ -30,17 +39,19 @@ if(this.myAppointment.Title.trim().length > 0 && this.myAppointment.AppointmentD
     
     this.allAppointments.push(newAppointment);
 
+    localStorage.setItem("myAppointments",JSON.stringify(this.allAppointments));
+
     this.myAppointment.Title="";
     this.myAppointment.AppointmentDate=new Date();
   }
 }
 
-deleteAppointment(Id :number,Title :string){
+deleteAppointment(index :number){
  
   if(this.allAppointments.length)
-    {
-      let arrayIndex :number =this.allAppointments.findIndex(c=>c.Id==Id && c.Title==Title);      
-      this.allAppointments.splice(arrayIndex,1);
+    {         
+      this.allAppointments.splice(index,1);
+      localStorage.setItem("myAppointments",JSON.stringify(this.allAppointments));
     }
   
 }
